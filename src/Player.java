@@ -7,6 +7,8 @@ public class Player {
     private List<Card> currentHand;
     private List<Card> playerDeck;
 
+    private int totalScore;
+
     public Player(String name) {
         this.name = name;
         this.currentHand = new ArrayList<>(3);
@@ -20,4 +22,15 @@ public class Player {
     public List<Card> getPlayerDeck() {
         return playerDeck;
     }
+
+    public int getTotalScore() {
+        //return totalScore;
+        int total = 0;
+        for (Card c:getPlayerDeck()) {
+            total+= c.rank();
+        }
+        return total;
+    }
+
+
 }

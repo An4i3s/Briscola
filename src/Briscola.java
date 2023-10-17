@@ -20,6 +20,7 @@ public class Briscola implements Comparator<Card>{
         return mazzo;
     }
 
+/*
     public int turnWinner(Card player1, Card player2){
         //x semplicare : valutare se presenza briscola nelle 2 carte (boolean isBriscola)
         // TODO: 16/10/2023 Condizioni da valutare
@@ -70,9 +71,10 @@ public class Briscola implements Comparator<Card>{
                         // Non ci sono Briscole quindi di conseguenza vince il player2
                         // a meno che valore numerico e rank siano maggiori
     }
+*/
 
     public boolean isBriscola(Card card){
-        if (card.suit() == briscola){
+        if (card.suit() == this.briscola){
             return true;
         }
         return false;
