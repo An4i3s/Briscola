@@ -4,14 +4,12 @@ import java.util.*;
 public class Main {
 
 
-
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+       // Scanner scanner = new Scanner(System.in);
 
         List<Card> mazzo = Card.getStandardDeck();
-       // Card.printDeck(mazzo);
         Collections.shuffle(mazzo);
-        Card.printDeck(mazzo);
+        //Card.printDeck(mazzo);
 
         Player player1 = new Player("Player 1");
         Player player2 = new Player("Player 2");
@@ -24,19 +22,12 @@ public class Main {
         System.out.println("La Briscola è "+gioco.briscola);
 
         Collections.rotate(mazzo,-1);
-        Card.printDeck(mazzo);
+        //Card.printDeck(mazzo);
 
-
-        //2 - Dai 3 carte al primo turno.
-        // Forse creare metodo to pick a card che permette di prelevare una singola carta (o più) dal mazzo
         primoTurno(mazzo, player1,player2);
-        Card.printDeck(mazzo);
-        System.out.println("La Briscola2 è "+gioco.briscola);
+      //  Card.printDeck(mazzo);
 
 
-
-        //5 - Viene valutata la carta vincitrice
-        int sizeOfDeck = gioco.mazzo.size();
         int turni = 17;
         boolean flag = true;
         while (turni>0) {
@@ -53,6 +44,7 @@ public class Main {
         }
         System.out.println();
         System.out.println("Ultima mano");
+        System.out.println("*".repeat(20));
         int y = 3;
         while (y>0){
             int result2 = giocaUltimoTurno(player1,player2, gioco.getBriscola(), flag);
@@ -70,29 +62,24 @@ public class Main {
         System.out.println("player1 hand = "+player1.getCurrentHand());
         System.out.println("player2 hand = "+player2.getCurrentHand());
 
-        //Implemenatre "ultimo turno"
-
-        //Vincitiore
-
         System.out.println("Punteggio totale Player 1 = "+player1.getTotalScore());
         System.out.println("Punteggio totale Player 2 = "+player2.getTotalScore());
 
-        System.out.println("Vince" + (player1.getTotalScore()> player2.getTotalScore()?"Player 1":"Player 2"));
+        System.out.println("Vince" + (player1.getTotalScore()> player2.getTotalScore()?" Player 1":" Player 2"));
 
     }
 
     public static void primoTurno(List<Card> mazzo, Player player1, Player player2){
         player1.getCurrentHand().addAll(mazzo.subList(0,3));
-        System.out.println("Player 1 cards = "+player1.getCurrentHand());
+       // System.out.println("Player 1 cards = "+player1.getCurrentHand());
         player2.getCurrentHand().addAll(mazzo.subList(3,6));
         System.out.println("Player 2 cards = "+player2.getCurrentHand());
         mazzo.removeAll(mazzo.subList(0,6));
     }
 
-    //deal card dovrebbe distribuire carte nell'ordine winner-loser
     public static void deal1Card(List<Card> mazzo, Player player1, Player player2){
         player1.getCurrentHand().add(mazzo.get(0));
-        System.out.println("Player 1 cards = "+player1.getCurrentHand());
+        //System.out.println("Player 1 cards = "+player1.getCurrentHand());
         player2.getCurrentHand().add(mazzo.get(1));
         System.out.println("Player 2 cards = "+player2.getCurrentHand());
 
@@ -101,7 +88,6 @@ public class Main {
 
     public static int giocaUltimoTurno(Player player1, Player player2, Card.Suit briscola, boolean flag){
         Scanner scanner1 = new Scanner(System.in);
-        //ultimo turno range pick a card minore
         Card pl1Card = pickCard(player1.getCurrentHand(), player1);
         Card pl2Card = null;
 
@@ -110,7 +96,7 @@ public class Main {
             System.out.println(player2.getCurrentHand());
             int scelta = scanner1.nextInt();
             while (scelta > player2.getCurrentHand().size()) {
-                System.out.println("Scelta non valida. Scegliere un numero tra 1 e 3");
+                System.out.println("Scelta non valida. Scegliere un numero tra 1 e "+player2.getCurrentHand().size());
                 scelta = scanner1.nextInt();
             }
             pl2Card = pickCard(player2.getCurrentHand(), player2, scelta-1);
@@ -124,30 +110,22 @@ public class Main {
 
             int scelta = scanner1.nextInt();
             while (scelta > player2.getCurrentHand().size()){
-                System.out.println("Scelta non valida. Scegliere un numero tra 1 e 3");
+                System.out.println("Scelta non valida. Scegliere un numero tra 1 e "+player2.getCurrentHand().size());
                 scelta = scanner1.nextInt();
             }
             pl2Card = pickCard(player2.getCurrentHand(), player2, scelta-1);
-
             System.out.println("Player 2 chose the "+pl2Card+ " card.");
         }
 
-        //attenzione a ordine di turn winner per fare iniziare il Player 2 quando vince una mano
         int result = turnWinner(pl1Card,pl2Card,briscola, (flag)?pl1Card.suit():pl2Card.suit());
         System.out.println("Result of turn winner is "+result);
         if (result == 1) {
             handleCards(player1,player2,pl1Card,pl2Card);
-            //deal1Card(mazzo, player1,player2);
             return 1;
-            //giocaP1 = true;
         }else {
             handleCards(player2,player1,pl2Card,pl1Card);
-            //deal1Card(mazzo, player1,player2);
             return 2;
-            //giocaPlayer1 = false;
         }
-
-        //make gioca turni return an int?
 
     }
 
@@ -192,12 +170,11 @@ public class Main {
             handleCards(player1,player2,pl1Card,pl2Card);
             deal1Card(mazzo, player1,player2);
             return 1;
-            //giocaP1 = true;
+
         }else {
             handleCards(player2,player1,pl2Card,pl1Card);
             deal1Card(mazzo, player1,player2);
             return 2;
-            //giocaPlayer1 = false;
         }
 
         //make gioca turni return an int?
@@ -223,7 +200,6 @@ public class Main {
 
     public static int turnWinner(Card player1, Card player2, Card.Suit briscola, Card.Suit semeVincitore){
 
-//devo implementare seme vincente, seme piu forte dopo la briscola.
 
         boolean cardHaveB =  isBriscola2(player1,briscola) && isBriscola2(player2, briscola);
         if (cardHaveB){
@@ -280,21 +256,10 @@ public class Main {
     }
 
     public static void handleCards(Player winner, Player loser, Card winnerCard, Card loserCard){
-
         winner.getPlayerDeck().add(winnerCard);
         winner.getPlayerDeck().add(loserCard);
         winner.getCurrentHand().remove(winnerCard);
         loser.getCurrentHand().remove(loserCard);
-    }
-
-    public static boolean p1Won(int i){
-        if (i ==1){
-            return true;
-        } else if (i == 2) {
-            return false;
-        }else {
-            return false;
-        }
     }
 
 }

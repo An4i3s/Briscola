@@ -64,7 +64,6 @@ public record Card(Suit suit, String face, int rank) {
     }
 
     public static void printDeck(List<Card> deck) {
-        //printDeck(deck, "Current Deck", 4);
         printDeck(deck, "Current Deck", 2);
     }
 

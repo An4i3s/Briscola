@@ -7,7 +7,7 @@ public class Player {
     private List<Card> currentHand;
     private List<Card> playerDeck;
 
-    private int totalScore;
+   // private int totalScore;
 
     public Player(String name) {
         this.name = name;
